@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'widgets/text_form_field_padrao.dart';
 
 class CadastrarViagens extends StatefulWidget {
-  const CadastrarViagens({super.key, required this.title});
-  final String title;
+  const CadastrarViagens({super.key});
 
   @override
   State<CadastrarViagens> createState() => _CadastrarViagensState();
@@ -17,63 +16,85 @@ class _CadastrarViagensState extends State<CadastrarViagens> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastra de Viagem'),
+        title: Text(
+          'Cadastra de Viagem',
+          style: TextStyle(
+            color: Color(0xFF844662),
+          ),
+        ),
+        backgroundColor: Color(0xFFE8A2C0),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          height: sizeOf.height * .9,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
-                child: Column(
-                  children: [
-                    TextFormFieldPadrao(
-                      titulo: 'Titulo',
-                      subTitulo: 'Digite o Titulo da viagem...',
-                    ),
-                    SizedBox(height: 16),
-                    TextFormFieldPadrao(
-                      titulo: 'Local Saida',
-                      subTitulo: 'Digite o local da saida..',
-                    ),
-                    SizedBox(height: 16),
-                    TextFormFieldPadrao(
-                      titulo: 'Horario de saida',
-                      subTitulo: 'Digite o horario da saida...',
-                    ),
-                    SizedBox(height: 16),
-                    TextFormFieldPadrao(
-                      titulo: 'Local Retorno',
-                      subTitulo: 'Digite o local do retorno...',
-                    ),
-                    SizedBox(height: 16),
-                    TextFormFieldPadrao(
-                      titulo: 'Horario de retorno',
-                      subTitulo: 'Digite o horario da retorno...',
-                    ),
-                    SizedBox(height: 16),
-                    TextFormFieldPadrao(
-                      titulo: 'Dias de viagem',
-                      subTitulo: 'Digite os dias que acontecerar a viagem...',
-                    ),
-                    SizedBox(height: 16),
-                    TextFormFieldPadrao(
-                      titulo: 'Horiaro disparo',
-                      subTitulo: 'Digite o horario de diparo dos lembretes...',
-                    ),
-                  ],
+        child: Padding(
+          padding: EdgeInsets.only(top: 16.0),
+          child: Container(
+            height: sizeOf.height * .85,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32),
+                  child: Column(
+                    children: [
+                      TextFormFieldPadrao(
+                        titulo: 'Titulo',
+                        subTitulo: 'Digite o Titulo da viagem...',
+                      ),
+                      SizedBox(height: 16),
+                      TextFormFieldPadrao(
+                        titulo: 'Local Saida',
+                        subTitulo: 'Digite o local da saida..',
+                      ),
+                      SizedBox(height: 16),
+                      TextFormFieldPadrao(
+                        titulo: 'Horario de saida',
+                        subTitulo: 'Digite o horario da saida...',
+                      ),
+                      SizedBox(height: 16),
+                      TextFormFieldPadrao(
+                        titulo: 'Local Retorno',
+                        subTitulo: 'Digite o local do retorno...',
+                      ),
+                      SizedBox(height: 16),
+                      TextFormFieldPadrao(
+                        titulo: 'Horario de retorno',
+                        subTitulo: 'Digite o horario da retorno...',
+                      ),
+                      SizedBox(height: 16),
+                      TextFormFieldPadrao(
+                        titulo: 'Dias de viagem',
+                        subTitulo: 'Digite os dias que acontecerar a viagem...',
+                      ),
+                      SizedBox(height: 16),
+                      TextFormFieldPadrao(
+                        titulo: 'Horiaro disparo',
+                        subTitulo:
+                            'Digite o horario de diparo dos lembretes...',
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 64),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Salvar'),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 32),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xFFE8A2C0)),
+                    ),
+                    onPressed: () {},
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      child: Text(
+                        'Salvar',
+                        style:
+                            TextStyle(color: Color(0xFF9D5D7A), fontSize: 20),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

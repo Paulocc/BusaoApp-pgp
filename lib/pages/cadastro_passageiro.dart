@@ -1,9 +1,8 @@
+import 'package:GiuseApp/pages/widgets/text_form_field_padrao.dart';
 import 'package:flutter/material.dart';
 
 class CadastroPassageiro extends StatefulWidget {
-  const CadastroPassageiro({super.key, required this.title});
-
-  final String title;
+  const CadastroPassageiro({super.key});
 
   @override
   State<CadastroPassageiro> createState() => _CadastroPassageiroState();
@@ -25,45 +24,82 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
 
   @override
   Widget build(BuildContext context) {
+    Size sizeOf = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          'Cadastro de Passageiros',
+          style: TextStyle(
+            color: Color(0xFF844662),
+          ),
+        ),
+        backgroundColor: Color(0xFFE8A2C0),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextFormField(
-              controller: nomeController,
-              decoration: InputDecoration(labelText: 'Nome'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Container(
+            height: sizeOf.height * .85,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    TextFormFieldPadrao(
+                      titulo: 'Nome',
+                      subTitulo: 'Digite seu nome...',
+                    ),
+                    SizedBox(height: 16),
+                    TextFormFieldPadrao(
+                      titulo: 'Endereço',
+                      subTitulo: 'Digite seu endereço...',
+                    ),
+                    SizedBox(height: 16),
+                    TextFormFieldPadrao(
+                      titulo: 'Endereço de desembarque',
+                      subTitulo: 'Digite seu endereço desembarque...',
+                    ),
+                    SizedBox(height: 16),
+                    TextFormFieldPadrao(
+                      titulo: 'Celular',
+                      subTitulo: 'Digite seu celular...',
+                    ),
+                    SizedBox(height: 16),
+                    TextFormFieldPadrao(
+                      titulo: 'CPF',
+                      subTitulo: 'Digite seu CPF...',
+                    ),
+                    SizedBox(height: 16),
+                    TextFormFieldPadrao(
+                      titulo: 'Email',
+                      subTitulo: 'Digite seu Email...',
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 32),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xFFE8A2C0)),
+                    ),
+                    onPressed: () {},
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      child: Text(
+                        'Salvar',
+                        style:
+                            TextStyle(color: Color(0xFF9D5D7A), fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            TextFormField(
-              controller: embarqueController,
-              decoration: InputDecoration(labelText: 'Endereço de embarque'),
-            ),
-            TextFormField(
-              controller: desembarqueController,
-              decoration: InputDecoration(labelText: 'Endereço de desembarque'),
-            ),
-            TextFormField(
-              controller: celularController,
-              decoration: InputDecoration(labelText: 'Celular'),
-            ),
-            TextFormField(
-              controller: cpfController,
-              decoration: InputDecoration(labelText: 'CPF'),
-            ),
-            TextFormField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _salvar,
-              child: Text('Salvar'),
-            ),
-          ],
+          ),
         ),
       ),
     );
