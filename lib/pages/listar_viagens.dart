@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+int a = 0;
+
 class ListarViagem extends StatefulWidget {
   const ListarViagem({super.key, required this.title});
 
@@ -10,8 +12,10 @@ class ListarViagem extends StatefulWidget {
 }
 
 class _ListarViagemState extends State<ListarViagem> {
+  late List<int> listaItens = [];
+
   void _salvar() {
-    print('Se apareceu no vscode é sucesso');
+    print('Se apareceu funcionou, até rimou');
   }
 
   @override
@@ -24,11 +28,11 @@ class _ListarViagemState extends State<ListarViagem> {
         padding: EdgeInsets.all(16.0),
         child: ListView.separated(
           padding: const EdgeInsets.all(8),
-          itemCount: 40, //aqui vai o número de viagens
+          itemCount: listaItens.length, //aqui vai o número de viagens
           itemBuilder: (BuildContext context, int index) {
             return ElevatedButton(
               onPressed: _salvar,
-              child: Text('trip muito loca'),
+              child: Text('Viagem ${listaItens[index]}'),
             );
           },
           separatorBuilder: (BuildContext context, int index) =>
@@ -38,8 +42,12 @@ class _ListarViagemState extends State<ListarViagem> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           // Add your onPressed code here!
+          setState(() {
+            a++;
+            listaItens.add(a);
+          });
         },
-        label: const Text('Nova Viagem'),
+        label: const Text('Nova Viageem'),
         icon: const Icon(Icons.add),
       ),
     );
