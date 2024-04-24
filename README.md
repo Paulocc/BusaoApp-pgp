@@ -1,4 +1,4 @@
-# ola_mundo
+# GiuseApp
 
 A new Flutter project.
 
