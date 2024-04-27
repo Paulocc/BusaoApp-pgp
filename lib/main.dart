@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pages/cadastrar_viagens.dart';
 import 'pages/cadastro_passageiro.dart';
-import 'pages/listar_viagens.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'GiuseApp',
       theme: ThemeData(
         colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 125, 152, 161)),
+            ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 125, 152, 161)),
         useMaterial3: true,
       ),
       home: const CadastroPassageiro(),

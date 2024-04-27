@@ -1,5 +1,6 @@
-import 'package:GiuseApp/pages/widgets/text_form_field_padrao.dart';
 import 'package:flutter/material.dart';
+
+import 'widgets/text_form_field_padrao.dart';
 
 class CadastroPassageiro extends StatefulWidget {
   const CadastroPassageiro({super.key});
@@ -17,34 +18,29 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
   TextEditingController cpfController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
-  void _salvar() {
-    print('Se apareceu no vscode é sucesso');
-    print(nomeController.text);
-  }
-
   @override
   Widget build(BuildContext context) {
     Size sizeOf = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Cadastro de Passageiros',
           style: TextStyle(
             color: Color(0xFF844662),
           ),
         ),
-        backgroundColor: Color(0xFFE8A2C0),
+        backgroundColor: const Color(0xFFE8A2C0),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
             height: sizeOf.height * .85,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     TextFormFieldPadrao(
@@ -79,14 +75,14 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 32),
+                  padding: const EdgeInsets.only(bottom: 32),
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Color(0xFFE8A2C0)),
+                          MaterialStateProperty.all(const Color(0xFFE8A2C0)),
                     ),
                     onPressed: () {},
-                    child: Padding(
+                    child: const Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                       child: Text(
