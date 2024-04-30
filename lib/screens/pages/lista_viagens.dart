@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ListarViagem extends StatefulWidget {
-  const ListarViagem({super.key, required this.title});
-
-  final String title;
+class ListaViagens extends StatefulWidget {
+  const ListaViagens({super.key});
 
   @override
-  State<ListarViagem> createState() => _ListarViagemState();
+  State<ListaViagens> createState() => _ListaViagensState();
 }
 
-class _ListarViagemState extends State<ListarViagem> {
+class _ListaViagensState extends State<ListaViagens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Viagens'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

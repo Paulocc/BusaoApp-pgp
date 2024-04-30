@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/text_form_field_padrao.dart';
+import '../components/text_form_field_padrao.dart';
 
 class CadastroPassageiro extends StatefulWidget {
   const CadastroPassageiro({super.key});

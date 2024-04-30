@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/text_form_field_padrao.dart';
+import '../components/text_form_field_padrao.dart';
 
-class CadastrarViagens extends StatefulWidget {
-  const CadastrarViagens({super.key});
+class CadastroViagens extends StatefulWidget {
+  const CadastroViagens({super.key});
 
   @override
-  State<CadastrarViagens> createState() => _CadastrarViagensState();
+  State<CadastroViagens> createState() => _CadastroViagensState();
 }
 
-class _CadastrarViagensState extends State<CadastrarViagens> {
+class _CadastroViagensState extends State<CadastroViagens> {
   @override
   Widget build(BuildContext context) {
     Size sizeOf = MediaQuery.of(context).size;
