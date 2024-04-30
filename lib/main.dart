@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'pages/cadastrar_viagens.dart';
-import 'pages/cadastro_passageiro.dart';
-import 'pages/listar_viagens.dart';
+import 'screens/pages/cadastro_passageiro.dart';
+import 'screens/pages/cadastro_viagens.dart';
+import 'screens/pages/lista_viagens.dart';
+import 'utils/consts/consts_colors.dart';
+import 'utils/enums/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,11 +18,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GiuseApp',
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 125, 152, 161)),
+        colorScheme: ColorScheme.fromSeed(seedColor: ConstColor.pinkDM),
         useMaterial3: true,
       ),
-      home: const CadastroPassageiro(),
+      initialRoute: Routes.listaViagens.valor,
+      routes: {
+        Routes.cadastroPassageiro.valor: (context) => const CadastroPassageiro(),
+        Routes.cadastroViagens.valor: (context) => const CadastroViagens(),
+        Routes.listaViagens.valor: (context) => const ListaViagens(),
+      }, 
     );
   }
 }

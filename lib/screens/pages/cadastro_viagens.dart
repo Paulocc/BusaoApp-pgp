@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/text_form_field_padrao.dart';
+import '../components/text_form_field_padrao.dart';
 
-class CadastrarViagens extends StatefulWidget {
-  const CadastrarViagens({super.key});
+class CadastroViagens extends StatefulWidget {
+  const CadastroViagens({super.key});
 
   @override
-  State<CadastrarViagens> createState() => _CadastrarViagensState();
+  State<CadastroViagens> createState() => _CadastroViagensState();
 }
 
-class _CadastrarViagensState extends State<CadastrarViagens> {
+class _CadastroViagensState extends State<CadastroViagens> {
   @override
   Widget build(BuildContext context) {
     Size sizeOf = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Cadastra de Viagem',
           style: TextStyle(
             color: Color(0xFF844662),
           ),
         ),
-        backgroundColor: Color(0xFFE8A2C0),
+        backgroundColor: const Color(0xFFE8A2C0),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(top: 16.0),
-          child: Container(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: SizedBox(
             height: sizeOf.height * .85,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,14 +75,14 @@ class _CadastrarViagensState extends State<CadastrarViagens> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 32),
+                  padding: const EdgeInsets.only(bottom: 32),
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Color(0xFFE8A2C0)),
+                          MaterialStateProperty.all(const Color(0xFFE8A2C0)),
                     ),
                     onPressed: () {},
-                    child: Padding(
+                    child: const Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                       child: Text(
