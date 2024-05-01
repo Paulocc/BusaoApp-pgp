@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/consts/consts_colors.dart';
 import '../components/text_form_field_padrao.dart';
 
 class CadastroPassageiro extends StatefulWidget {
@@ -27,10 +28,10 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
         title: const Text(
           'Cadastro de Passageiros',
           style: TextStyle(
-            color: Color(0xFF844662),
+            color: ConstColor.pinkVS,
           ),
         ),
-        backgroundColor: const Color(0xFFE8A2C0),
+        backgroundColor: ConstColor.pinkDM,
       ),
       body: SingleChildScrollView(
         child: Padding(
