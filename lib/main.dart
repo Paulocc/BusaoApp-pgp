@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/pages/cadastro_passageiro.dart';
 import 'screens/pages/cadastro_viagens.dart';
+import 'screens/pages/lista_passageiros.dart';
 import 'screens/pages/lista_viagens.dart';
 import 'utils/consts/consts_colors.dart';
 import 'utils/enums/routes.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Routes.cadastroPassageiro.valor: (context) => const CadastroPassageiro(),
         Routes.cadastroViagens.valor: (context) => const CadastroViagens(),
+        Routes.listaPassageiros.valor: (context) => const ListaPassageiros(),
         Routes.listaViagens.valor: (context) => const ListaViagens(),
       }, 
     );

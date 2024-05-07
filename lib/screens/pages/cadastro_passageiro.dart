@@ -82,7 +82,7 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
                       backgroundColor:
                           MaterialStateProperty.all(const Color(0xFFE8A2C0)),
                     ),
-                    onPressed: () {},
+                    onPressed: () => Navigator.pop(context),
                     child: const Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 24, vertical: 12),
