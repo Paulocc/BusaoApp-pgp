@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giuse_app/screens/bloc/passageiros_cubit.dart';
 
 import 'screens/pages/cadastro_passageiro.dart';
 import 'screens/pages/cadastro_viagens.dart';
@@ -16,19 +17,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'GiuseApp',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: ConstColor.pinkDM),
-        useMaterial3: true,
+    return BlocProvider(
+        create: () => PassageirosCubit(),
+        child: MaterialApp(
+          title: 'GiuseApp',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: ConstColor.pinkDM),
+            useMaterial3: true,
+          ),
+          initialRoute: Routes.listaViagens.valor,
+          routes: {
+            Routes.cadastroPassageiro.valor: (context) =>
+                const CadastroPassageiro(),
+            Routes.cadastroViagens.valor: (context) => const CadastroViagens(),
+            Routes.listaPassageiros.valor: (context) =>
+                const ListaPassageiros(),
+            Routes.listaViagens.valor: (context) => const ListaViagens(),
+          },
+        ),
       ),
-      initialRoute: Routes.listaViagens.valor,
-      routes: {
-        Routes.cadastroPassageiro.valor: (context) => const CadastroPassageiro(),
-        Routes.cadastroViagens.valor: (context) => const CadastroViagens(),
-        Routes.listaPassageiros.valor: (context) => const ListaPassageiros(),
-        Routes.listaViagens.valor: (context) => const ListaViagens(),
-      }, 
     );
   }
 }

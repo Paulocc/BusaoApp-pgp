@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giuse_app/screens/bloc/passageiros_cubit.dart';
 
 import '../../utils/consts/consts_colors.dart';
 import '../components/text_form_field_padrao.dart';
@@ -21,7 +22,15 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
 
   @override
   Widget build(BuildContext context) {
+
+    late final PassageirosCubit cubitPassageiros;
     Size sizeOf = MediaQuery.of(context).size;
+
+    @override
+    initState(){
+      super.initState();
+      cubitPassageiros = BlocProvider.of<PassageirosCubit>;
+    };
 
     return Scaffold(
       appBar: AppBar(
@@ -41,37 +50,43 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     TextFormFieldPadrao(
                       titulo: 'Nome',
                       subTitulo: 'Digite seu nome...',
+                      controller: nomeController,
                     ),
                     SizedBox(height: 16),
                     TextFormFieldPadrao(
                       titulo: 'Endereço',
                       subTitulo: 'Digite seu endereço...',
+                      controller: embarqueController,
                     ),
                     SizedBox(height: 16),
                     TextFormFieldPadrao(
                       titulo: 'Endereço de desembarque',
                       subTitulo: 'Digite seu endereço desembarque...',
+                      controller: desembarqueController,
                     ),
                     SizedBox(height: 16),
                     TextFormFieldPadrao(
                       titulo: 'Celular',
                       subTitulo: 'Digite seu celular...',
+                      controller: celularController,
                     ),
                     SizedBox(height: 16),
                     TextFormFieldPadrao(
                       titulo: 'CPF',
                       subTitulo: 'Digite seu CPF...',
+                      controller: cpfController,
                     ),
                     SizedBox(height: 16),
                     TextFormFieldPadrao(
                       titulo: 'Email',
                       subTitulo: 'Digite seu Email...',
+                      controller: emailController,
                     ),
                   ],
                 ),
@@ -82,7 +97,10 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
                       backgroundColor:
                           MaterialStateProperty.all(const Color(0xFFE8A2C0)),
                     ),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+
+                      Navigator.pop(context);
+                    },
                     child: const Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 24, vertical: 12),

@@ -35,45 +35,45 @@ class _CadastroViagensState extends State<CadastroViagens> {
               children: [
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 32),
-                  child: Column(
-                    children: [
-                      TextFormFieldPadrao(
-                        titulo: 'Titulo',
-                        subTitulo: 'Digite o Titulo da viagem...',
-                      ),
-                      SizedBox(height: 16),
-                      TextFormFieldPadrao(
-                        titulo: 'Local Saida',
-                        subTitulo: 'Digite o local da saida..',
-                      ),
-                      SizedBox(height: 16),
-                      TextFormFieldPadrao(
-                        titulo: 'Horario de saida',
-                        subTitulo: 'Digite o horario da saida...',
-                      ),
-                      SizedBox(height: 16),
-                      TextFormFieldPadrao(
-                        titulo: 'Local Retorno',
-                        subTitulo: 'Digite o local do retorno...',
-                      ),
-                      SizedBox(height: 16),
-                      TextFormFieldPadrao(
-                        titulo: 'Horario de retorno',
-                        subTitulo: 'Digite o horario da retorno...',
-                      ),
-                      SizedBox(height: 16),
-                      TextFormFieldPadrao(
-                        titulo: 'Dias de viagem',
-                        subTitulo: 'Digite os dias que acontecerar a viagem...',
-                      ),
-                      SizedBox(height: 16),
-                      TextFormFieldPadrao(
-                        titulo: 'Horiaro disparo',
-                        subTitulo:
-                            'Digite o horario de diparo dos lembretes...',
-                      ),
-                    ],
-                  ),
+                  // child: Column(
+                  //   children: [
+                  //     TextFormFieldPadrao(
+                  //       titulo: 'Titulo',
+                  //       subTitulo: 'Digite o Titulo da viagem...',
+                  //     ),
+                  //     SizedBox(height: 16),
+                  //     TextFormFieldPadrao(
+                  //       titulo: 'Local Saida',
+                  //       subTitulo: 'Digite o local da saida..',
+                  //     ),
+                  //     SizedBox(height: 16),
+                  //     TextFormFieldPadrao(
+                  //       titulo: 'Horario de saida',
+                  //       subTitulo: 'Digite o horario da saida...',
+                  //     ),
+                  //     SizedBox(height: 16),
+                  //     TextFormFieldPadrao(
+                  //       titulo: 'Local Retorno',
+                  //       subTitulo: 'Digite o local do retorno...',
+                  //     ),
+                  //     SizedBox(height: 16),
+                  //     TextFormFieldPadrao(
+                  //       titulo: 'Horario de retorno',
+                  //       subTitulo: 'Digite o horario da retorno...',
+                  //     ),
+                  //     SizedBox(height: 16),
+                  //     TextFormFieldPadrao(
+                  //       titulo: 'Dias de viagem',
+                  //       subTitulo: 'Digite os dias que acontecerar a viagem...',
+                  //     ),
+                  //     SizedBox(height: 16),
+                  //     TextFormFieldPadrao(
+                  //       titulo: 'Horiaro disparo',
+                  //       subTitulo:
+                  //           'Digite o horario de diparo dos lembretes...',
+                  //     ),
+                  //   ],
+                  // ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 32),
