@@ -20,17 +20,17 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
   TextEditingController cpfController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
+  late final PassageirosCubit _cubitPassageiros;
+
+  @override
+  initState(){
+    super.initState();
+    _cubitPassageiros = PassageirosCubit();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    late final PassageirosCubit cubitPassageiros;
     Size sizeOf = MediaQuery.of(context).size;
-
-    @override
-    initState(){
-      super.initState();
-      cubitPassageiros = BlocProvider.of<PassageirosCubit>;
-    };
 
     return Scaffold(
       appBar: AppBar(
@@ -98,7 +98,7 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
                           MaterialStateProperty.all(const Color(0xFFE8A2C0)),
                     ),
                     onPressed: () {
-
+                      _cubitPassageiros.salvarPassageiro(nomeController.text);
                       Navigator.pop(context);
                     },
                     child: const Padding(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/consts/consts_colors.dart';
+import '../bloc/passageiros_cubit.dart';
 import 'cadastro_passageiro.dart';
 
 class ListaPassageiros extends StatefulWidget {
@@ -11,11 +12,17 @@ class ListaPassageiros extends StatefulWidget {
 }
 
 class _ListaPassageirosState extends State<ListaPassageiros> {
-
   
   List<String> listaViagens = [];
   int cont = 0;
 
+  late final PassageirosCubit _cubitPassageiros;
+
+  @override
+  initState(){
+    super.initState();
+    _cubitPassageiros = PassageirosCubit();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,7 @@ class _ListaPassageirosState extends State<ListaPassageiros> {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: listaViagens.length, //aqui vai o número de viagens
+        itemCount: _cubitPassageiros.listaPassageiros.length, //aqui vai o número de viagens
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {},
@@ -63,7 +70,7 @@ class _ListaPassageirosState extends State<ListaPassageiros> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 8),
-                        child: Text(listaViagens[index]),
+                        child: Text(_cubitPassageiros.listaPassageiros[index]),
                       ),
                     ],
                   ),
@@ -80,7 +87,7 @@ class _ListaPassageirosState extends State<ListaPassageiros> {
             MaterialPageRoute(builder: (context) => const CadastroPassageiro()),
           ).then((value) => setState(() {
             cont++;
-            listaViagens.add('teste $cont');
+            //listaViagens.add('teste $cont');
           }));
         },
         label: const Text('Passageiro'),
