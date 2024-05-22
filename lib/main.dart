@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:giuse_app/repositories/passageiro_repository.dart';
+import 'package:provider/provider.dart';
 
 import 'screens/bloc/passageiros_cubit.dart';
 import 'screens/pages/cadastro_passageiro.dart';
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => PassageirosCubit()),
+        ChangeNotifierProvider(create: (context) => PassageiroRepository()),
       ],
       child: MaterialApp(
         title: 'GiuseApp',

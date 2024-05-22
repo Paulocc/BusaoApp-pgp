@@ -34,8 +34,8 @@ _onCreate(db, versao) async {
 String get _passageiros => '''
   CREATE TABLE passageiros (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome_passageiro TEXT,
-    cpf_passageiro TEXT,
+    nome TEXT,
+    cpf TEXT,
     telefone INTEGER,
     email TEXT,
     endereco_embarque_latitude TEXT,
