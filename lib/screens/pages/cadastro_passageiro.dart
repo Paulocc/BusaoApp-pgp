@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giuse_app/database/sql_helper.dart';
-import 'package:giuse_app/screens/bloc/passageiros_cubit.dart';
+import 'package:giuse_app/screens/bloc/passageiros/passageiros_cubit.dart';
 
 import '../../utils/consts/consts_colors.dart';
 import '../components/text_form_field_padrao.dart';

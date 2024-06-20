@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:giuse_app/database/sql_helper.dart';
 
 import '../../utils/consts/consts_colors.dart';
-import '../bloc/passageiros_cubit.dart';
+import '../bloc/passageiros/passageiros_cubit.dart';
 import 'cadastro_passageiro.dart';
 
 class ListaPassageiros extends StatefulWidget {

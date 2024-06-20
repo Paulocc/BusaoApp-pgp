@@ -14,3 +14,9 @@ class ViagemSalvar extends ViagemEvent{
 }
 
 class ViagemCarregar extends ViagemEvent{}
+
+class ViagemDeletar extends ViagemEvent{
+  final Viagem viagem;
+
+  const ViagemDeletar({required this.viagem});
+}

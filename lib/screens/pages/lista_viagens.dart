@@ -34,59 +34,73 @@ class _ListaViagensState extends State<ListaViagens> {
       ),
       body: BlocBuilder<ViagemBloc, ViagemState>(
         builder: (context, state) {
-            return ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: state.listaViagens != null
-                  ? state.listaViagens?.length
-                  : 0, //aqui vai o número de viagens
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ListaPassageiros()),
+          return ListView.builder(
+            padding: const EdgeInsets.all(8),
+            itemCount: state.listaViagens != null
+                ? state.listaViagens?.length
+                : 0, //aqui vai o número de viagens
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ListaPassageiros()),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4.0,
+                    horizontal: 8.0,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 4.0,
-                      horizontal: 8.0,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white, // Cor do containLer
-                        borderRadius:
-                            BorderRadius.circular(10.0), // Arredondar cantos
-                        border: Border.all(
-                          color: ConstColor.pinkVS, // Cor da borda
-                          width: 2.0, // Espessura da borda
-                        ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Cor do containLer
+                      borderRadius:
+                          BorderRadius.circular(10.0), // Arredondar cantos
+                      border: Border.all(
+                        color: ConstColor.pinkVS, // Cor da borda
+                        width: 2.0, // Espessura da borda
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 10,
-                              decoration: BoxDecoration(
-                                color: Colors.green, // Cor do container
-                                borderRadius: BorderRadius.circular(
-                                    10.0), // Arredondar cantos
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                height: 50,
+                                width: 10,
+                                decoration: BoxDecoration(
+                                  color: Colors.green, // Cor do container
+                                  borderRadius: BorderRadius.circular(
+                                      10.0), // Arredondar cantos
+                                ),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Text(
+                                    state.listaViagens?[index].titulo ?? ''),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                            onPressed: () =>
+                                BlocProvider.of<ViagemBloc>(context)
+                                    .add(ViagemDeletar(viagem: state.listaViagens![index])),
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child:
-                                  Text(state.listaViagens?[index].titulo ?? ''),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                );
-              },
-            );
+                ),
+              );
+            },
+          );
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -94,7 +108,8 @@ class _ListaViagensState extends State<ListaViagens> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const CadastroViagens()),
-          ).then((value) => BlocProvider.of<ViagemBloc>(context).add(ViagemCarregar()));
+          ).then((value) =>
+              BlocProvider.of<ViagemBloc>(context).add(ViagemCarregar()));
         },
         label: const Text('Nova Viagem'),
         icon: const Icon(Icons.add),

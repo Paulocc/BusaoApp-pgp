@@ -9,19 +9,25 @@ part 'viagem_state.dart';
 class ViagemBloc extends Bloc<ViagemEvent, ViagemState> {
   ViagemBloc() : super(ViagemInitial()) {
     on<ViagemCarregar>((event, emit) {
-      print('ViagemCarregar');
       emit(ViagemLoading(listaViagens: state.listaViagens));
-      //Carrega viagens da memoria
+      //Get do banco de todas as viagens
       List<Viagem> viagensLocal = state.listaViagens ?? [];
-      print(viagensLocal);
       emit(ViagemLoaded(listaViagens: viagensLocal));
     });
+
     on<ViagemSalvar>((event, emit) {
-      print('ViagemSalvar');
       emit(ViagemLoading(listaViagens: state.listaViagens));
+      //Insert o event.viagem no banco
       List<Viagem> viagens = state.listaViagens ?? [];
       viagens.add(event.viagem);
-      print(viagens);
+      emit(ViagemSave(listaViagens: viagens));
+    });
+
+    on<ViagemDeletar>((event, emit) {
+      emit(ViagemLoading(listaViagens: state.listaViagens));
+      List<Viagem> viagens = state.listaViagens ?? [];
+      viagens.remove(event.viagem);
+      //Delet o event.viagem no banco
       emit(ViagemSave(listaViagens: viagens));
     });
   }
