@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'screens/bloc/passageiros_cubit.dart';
+import 'screens/bloc/viagem/viagem_bloc.dart';
 import 'screens/pages/cadastro_passageiro.dart';
 import 'screens/pages/cadastro_viagens.dart';
 import 'screens/pages/lista_passageiros.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => PassageirosCubit()),
+        BlocProvider.value(value: ViagemBloc()),
       ],
       child: MaterialApp(
         title: 'GiuseApp',

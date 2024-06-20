@@ -13,13 +13,12 @@ class CadastroPassageiro extends StatefulWidget {
 }
 
 class _CadastroPassageiroState extends State<CadastroPassageiro> {
-  //Nome, embarque, desembarque, celular, cpf, email
   TextEditingController nomeController = TextEditingController();
   TextEditingController embarqueController = TextEditingController();
-  TextEditingController desembarqueController = TextEditingController();
   TextEditingController celularController = TextEditingController();
   TextEditingController cpfController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController desembarqueController = TextEditingController();
 
   late final PassageirosCubit _cubitPassageiros;
 
@@ -69,31 +68,25 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
                       subTitulo: 'Digite seu nome...',
                       controller: nomeController,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     TextFormFieldPadrao(
                       titulo: 'Endereço',
                       subTitulo: 'Digite seu endereço...',
                       controller: embarqueController,
                     ),
-                    SizedBox(height: 16),
-                    TextFormFieldPadrao(
-                      titulo: 'Endereço de desembarque',
-                      subTitulo: 'Digite seu endereço desembarque...',
-                      controller: desembarqueController,
-                    ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     TextFormFieldPadrao(
                       titulo: 'Celular',
                       subTitulo: 'Digite seu celular...',
                       controller: celularController,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     TextFormFieldPadrao(
                       titulo: 'CPF',
                       subTitulo: 'Digite seu CPF...',
                       controller: cpfController,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     TextFormFieldPadrao(
                       titulo: 'Email',
                       subTitulo: 'Digite seu Email...',
