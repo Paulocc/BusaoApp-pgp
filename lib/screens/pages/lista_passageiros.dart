@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giuse_app/database/sql_helper.dart';
 
 import '../../utils/consts/consts_colors.dart';
 import '../bloc/passageiros_cubit.dart';
@@ -12,16 +13,27 @@ class ListaPassageiros extends StatefulWidget {
 }
 
 class _ListaPassageirosState extends State<ListaPassageiros> {
-  
-  List<String> listaViagens = [];
+  List<Map<String, dynamic>> listaPassageiros = [];
   int cont = 0;
+
+  bool isLoading = true;
+
+  void refreshPassageiros() async {
+    final data = await SQLHelper.getPassageiros();
+    setState(() {
+      listaPassageiros = data;
+      isLoading = false;
+    });
+  }
 
   late final PassageirosCubit _cubitPassageiros;
 
   @override
-  initState(){
+  initState() {
     super.initState();
+    refreshPassageiros();
     _cubitPassageiros = PassageirosCubit();
+    print("...number of itens ${listaPassageiros.length}");
   }
 
   @override
@@ -36,7 +48,7 @@ class _ListaPassageirosState extends State<ListaPassageiros> {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: _cubitPassageiros.listaPassageiros.length, //aqui vai o número de viagens
+        itemCount: listaPassageiros.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {},
@@ -70,7 +82,7 @@ class _ListaPassageirosState extends State<ListaPassageiros> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 8),
-                        child: Text(_cubitPassageiros.listaPassageiros[index]),
+                        child: Text(listaPassageiros[index]['nome']),
                       ),
                     ],
                   ),
@@ -86,9 +98,9 @@ class _ListaPassageirosState extends State<ListaPassageiros> {
             context,
             MaterialPageRoute(builder: (context) => const CadastroPassageiro()),
           ).then((value) => setState(() {
-            cont++;
-            //listaViagens.add('teste $cont');
-          }));
+                cont++;
+                //listaViagens.add('teste $cont');
+              }));
         },
         label: const Text('Passageiro'),
         icon: const Icon(Icons.add),

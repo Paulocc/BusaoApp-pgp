@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giuse_app/database/sql_helper.dart';
 import 'package:giuse_app/screens/bloc/passageiros_cubit.dart';
 
 import '../../utils/consts/consts_colors.dart';
@@ -23,9 +24,19 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
   late final PassageirosCubit _cubitPassageiros;
 
   @override
-  initState(){
+  initState() {
     super.initState();
     _cubitPassageiros = PassageirosCubit();
+  }
+
+  Future<void> addPassageiro() async {
+    await SQLHelper.createPassageiro(
+        nomeController.text,
+        cpfController.text,
+        celularController.hashCode,
+        emailController.text,
+        embarqueController.text,
+        desembarqueController.text);
   }
 
   @override
@@ -99,6 +110,7 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
                     ),
                     onPressed: () {
                       _cubitPassageiros.salvarPassageiro(nomeController.text);
+                      addPassageiro();
                       Navigator.pop(context);
                     },
                     child: const Padding(
