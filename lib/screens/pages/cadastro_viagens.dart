@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:giuse_app/database/sql_helper.dart';
 
 import '../../models/viagem_model.dart';
 import '../../utils/consts/consts_colors.dart';
@@ -18,15 +19,18 @@ class _CadastroViagensState extends State<CadastroViagens> {
   TextEditingController saidaController = TextEditingController();
   TextEditingController retornoController = TextEditingController();
 
+  Future<void> addViagem() async {
+    await SQLHelper.createViagem(
+        tituloController.text, saidaController.text, retornoController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
-    Size sizeOf = MediaQuery
-        .of(context)
-        .size;
+    Size sizeOf = MediaQuery.of(context).size;
 
     return BlocListener<ViagemBloc, ViagemState>(
       listener: (context, state) {
-        if(state is ViagemSave){
+        if (state is ViagemSave) {
           Navigator.pop(context);
         }
       },
@@ -98,7 +102,7 @@ class _CadastroViagensState extends State<CadastroViagens> {
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all(const Color(0xFFE8A2C0)),
+                            MaterialStateProperty.all(const Color(0xFFE8A2C0)),
                       ),
                       onPressed: () {
                         BlocProvider.of<ViagemBloc>(context).add(
@@ -110,14 +114,15 @@ class _CadastroViagensState extends State<CadastroViagens> {
                             ),
                           ),
                         );
+                        addViagem();
                       },
                       child: const Padding(
                         padding:
-                        EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                         child: Text(
                           'Salvar',
                           style:
-                          TextStyle(color: Color(0xFF9D5D7A), fontSize: 20),
+                              TextStyle(color: Color(0xFF9D5D7A), fontSize: 20),
                         ),
                       ),
                     ),

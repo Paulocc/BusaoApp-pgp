@@ -35,7 +35,8 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
         celularController.hashCode,
         emailController.text,
         embarqueController.text,
-        desembarqueController.text);
+        desembarqueController.text,
+        1);
   }
 
   @override

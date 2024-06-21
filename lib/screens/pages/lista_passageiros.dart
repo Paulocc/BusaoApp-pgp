@@ -19,7 +19,7 @@ class _ListaPassageirosState extends State<ListaPassageiros> {
   bool isLoading = true;
 
   void refreshPassageiros() async {
-    final data = await SQLHelper.getPassageiros();
+    final data = await SQLHelper.getPassageiros(1);
     setState(() {
       listaPassageiros = data;
       isLoading = false;
@@ -33,7 +33,6 @@ class _ListaPassageirosState extends State<ListaPassageiros> {
     super.initState();
     refreshPassageiros();
     _cubitPassageiros = PassageirosCubit();
-    print("...number of itens ${listaPassageiros.length}");
   }
 
   @override

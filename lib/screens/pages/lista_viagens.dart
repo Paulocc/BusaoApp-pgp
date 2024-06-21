@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:giuse_app/database/sql_helper.dart';
 
 import '../../utils/consts/consts_colors.dart';
 import '../bloc/viagem/viagem_bloc.dart';
@@ -14,6 +15,19 @@ class ListaViagens extends StatefulWidget {
 }
 
 class _ListaViagensState extends State<ListaViagens> {
+  List<Map<String, dynamic>> listaViagens = [];
+  int cont = 0;
+
+  bool isLoading = true;
+
+  void refreshViagens() async {
+    final data = await SQLHelper.getViagens();
+    setState(() {
+      listaViagens = data;
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
     BlocProvider.of<ViagemBloc>(context).add(ViagemCarregar());
@@ -86,8 +100,9 @@ class _ListaViagensState extends State<ListaViagens> {
                           ),
                           IconButton(
                             onPressed: () =>
-                                BlocProvider.of<ViagemBloc>(context)
-                                    .add(ViagemDeletar(viagem: state.listaViagens![index])),
+                                BlocProvider.of<ViagemBloc>(context).add(
+                                    ViagemDeletar(
+                                        viagem: state.listaViagens![index])),
                             icon: const Icon(
                               Icons.delete,
                               color: Colors.red,
