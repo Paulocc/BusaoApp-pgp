@@ -31,8 +31,12 @@ class ViagemPassageirosBloc
 
       int viagemId = state.viagemPassageiros?.viagem?.id ?? 0;
 
-      await SQLHelper.insertPassageirosStatus(PassageirosStatus(
-          status: 0, viagemId: viagemId, passageiroId: event.passageiro.id));
+      if (event.passageiros.isNotEmpty) {
+        for (Passageiro pas in event.passageiros) {
+          await SQLHelper.insertPassageirosStatus(PassageirosStatus(
+              status: 0, viagemId: viagemId, passageiroId: pas.id));
+        }
+      }
 
       emit(ViagemPassageirosAdd(
         viagemPassageiros: await _getViagemPassageiros(viagemId),
@@ -53,6 +57,57 @@ class ViagemPassageirosBloc
         viagemPassageiros: await _getViagemPassageiros(
           passageiro.viagemId ?? 0,
         ),
+      ));
+    });
+
+    on<ViagemPassageirosGeraRotas>((event, emit) async {
+      emit(ViagemPassageirosLoading(
+        viagemPassageiros: state.viagemPassageiros,
+      ));
+      print('ViagemPassageirosGeraRotas');
+
+      String url = 'https://www.google.com/maps/dir';
+
+      String enderecosPassageirosIda = '';
+      String enderecosPassageirosVolta = '';
+
+      if (state.viagemPassageiros!.listaPassageirosStatus != null &&
+          state.viagemPassageiros!.listaPassageirosStatus!.isNotEmpty &&
+          state.viagemPassageiros!.listaPassageiros != null &&
+          state.viagemPassageiros!.listaPassageiros!.isNotEmpty) {
+        List<PassageirosStatus> listaPassageirosConfirmados = state
+            .viagemPassageiros!.listaPassageirosStatus!
+            .where((el) => el.status == 1)
+            .toList();
+
+        List<Passageiro> passageiros = [];
+
+        for (PassageirosStatus pasStatus in listaPassageirosConfirmados) {
+          Passageiro passageiro = state.viagemPassageiros!.listaPassageiros!
+              .firstWhere((el) => el.id == pasStatus.passageiroId);
+          passageiros.add(passageiro);
+        }
+
+        for(Passageiro pas in passageiros){
+          enderecosPassageirosIda += '${pas.enderecoEmbarque!.toStringByMapGoogle()}/';
+          enderecosPassageirosVolta += '${pas.enderecoDesembarque!.toStringByMapGoogle()}/';
+        }
+      }
+
+      String urlIda = '$url/'
+          '${state.viagemPassageiros!.viagem!.enderecoSaida!.toStringByMapGoogle()}/'
+          '${enderecosPassageirosIda != '' ? '$enderecosPassageirosIda' : ''}'
+          '${state.viagemPassageiros!.viagem!.enderecoRetorno!.toStringByMapGoogle()}/';
+
+      String urlVolta = '$url/'
+          '${state.viagemPassageiros!.viagem!.enderecoRetorno!.toStringByMapGoogle()}/'
+          '${enderecosPassageirosVolta != '' ? '$enderecosPassageirosVolta' : ''}'
+          '${state.viagemPassageiros!.viagem!.enderecoSaida!.toStringByMapGoogle()}/';
+
+      emit(ViagemPassageirosRotaGerada(
+        urlIda: urlIda,
+        urlVolta: urlVolta,
+        viagemPassageiros: state.viagemPassageiros,
       ));
     });
   }

@@ -1,3 +1,4 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,7 +78,7 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
                         textInputType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(11),
+                          TelefoneInputFormatter(),
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -145,10 +146,11 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
   }
 
   _onChangedEmbarque(String cepSaida) async {
-    if (cepSaida.length == 8) {
-      _infoCepEmbarque =
-          (await ViaCepSearchCep().searchInfoByCep(cep: cepSaida))
-              .fold((_) => ViaCepInfo(), (data) => data);
+    if (cepSaida.length == 10) {
+      _infoCepEmbarque = (await ViaCepSearchCep().searchInfoByCep(
+        cep: cepSaida.replaceAll('-', '').replaceAll('.', ''),
+      ))
+          .fold((_) => ViaCepInfo(), (data) => data);
     }
     setState(() {
       logradouroEmbarqueController.text = _infoCepEmbarque.logradouro ?? '';
@@ -160,10 +162,11 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
   }
 
   _onChangedDesembarque(String cepSaida) async {
-    if (cepSaida.length == 8) {
-      _infoCepDesembarque =
-          (await ViaCepSearchCep().searchInfoByCep(cep: cepSaida))
-              .fold((_) => ViaCepInfo(), (data) => data);
+    if (cepSaida.length == 10) {
+      _infoCepDesembarque = (await ViaCepSearchCep().searchInfoByCep(
+        cep: cepSaida.replaceAll('-', '').replaceAll('.', ''),
+      ))
+          .fold((_) => ViaCepInfo(), (data) => data);
     }
     setState(() {
       logradouroDesembarqueController.text =

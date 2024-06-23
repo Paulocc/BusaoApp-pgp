@@ -1,6 +1,6 @@
 part of 'viagem_passageiros_bloc.dart';
 
-sealed class ViagemPassageirosState  extends Equatable {
+sealed class ViagemPassageirosState extends Equatable {
   final ViagemPassageiros? viagemPassageiros;
 
   const ViagemPassageirosState({this.viagemPassageiros});
@@ -21,4 +21,12 @@ final class ViagemPassageirosLoaded extends ViagemPassageirosState {
 
 final class ViagemPassageirosAdd extends ViagemPassageirosState {
   const ViagemPassageirosAdd({super.viagemPassageiros});
+}
+
+final class ViagemPassageirosRotaGerada extends ViagemPassageirosState {
+  final String urlIda;
+  final String urlVolta;
+
+  const ViagemPassageirosRotaGerada(
+      {super.viagemPassageiros, required this.urlIda, required this.urlVolta});
 }

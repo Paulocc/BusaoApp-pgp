@@ -6,6 +6,7 @@ import '../../models/passageiros_status.dart';
 import '../../utils/consts/consts_colors.dart';
 import '../bloc/viagem_passageiros/viagem_passageiros_bloc.dart';
 import 'lista_passageiros_cadastrados.dart';
+import 'rotas_geradas.dart';
 
 class ListaPassageirosViagem extends StatefulWidget {
   const ListaPassageirosViagem({super.key, required this.vistoriaId});
@@ -38,7 +39,7 @@ class _ListaPassageirosViagemState extends State<ListaPassageirosViagem> {
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.person_add,
+              Icons.group_add,
               color: ConstColor.pinkVS,
             ),
             onPressed: () {
@@ -59,81 +60,111 @@ class _ListaPassageirosViagemState extends State<ListaPassageirosViagem> {
           if (state is ViagemPassageirosLoading) {
             const CircularProgressIndicator();
           } else {
-            return ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: state.viagemPassageiros != null &&
-                      state.viagemPassageiros?.listaPassageirosStatus != null
-                  ? state.viagemPassageiros?.listaPassageirosStatus?.length
-                  : 0,
-              itemBuilder: (BuildContext context, int index) {
-                PassageirosStatus pasStatus =
-                    state.viagemPassageiros?.listaPassageirosStatus![index] ??
-                        PassageirosStatus();
-                Passageiro passageiro =
-                    state.viagemPassageiros?.listaPassageiros?[index] ??
-                        Passageiro();
+            bool listaVazia = state.viagemPassageiros == null ||
+                state.viagemPassageiros?.listaPassageirosStatus == null ||
+                state.viagemPassageiros!.listaPassageirosStatus!.isEmpty;
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4.0,
-                    horizontal: 8.0,
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Cor do container
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Arredondar cantos
-                      border: Border.all(
-                        color: ConstColor.pinkVS, // Cor da borda
-                        width: 2.0, // Espessura da borda
-                      ),
+            return listaVazia
+                ? const Center(
+                    child: Text(
+                    'Nenhum passageiro\nnesta viagem',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: ConstColor.pinkDM,
+                      fontWeight: FontWeight.w500,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: InkWell(
-                        onTap: () =>
-                            BlocProvider.of<ViagemPassageirosBloc>(context)
-                                .add(ViagemPassageirosUpadateStatus(
-                          passageirosStatus: pasStatus,
-                        )),
-                        child: Row(
-                          children: [
-                            pasStatus.status == 1
-                                ? const Icon(
-                                    Icons.check_circle,
-                                    color: Colors.green,
-                                    size: 32,
-                                  )
-                                : const Icon(
-                                    Icons.cancel,
-                                    color: Colors.red,
-                                    size: 32,
+                  ))
+                : ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: listaVazia
+                        ? 0
+                        : state
+                            .viagemPassageiros?.listaPassageirosStatus?.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      PassageirosStatus pasStatus = state.viagemPassageiros
+                              ?.listaPassageirosStatus![index] ??
+                          PassageirosStatus();
+                      Passageiro passageiro =
+                          state.viagemPassageiros?.listaPassageiros?[index] ??
+                              Passageiro();
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4.0,
+                          horizontal: 8.0,
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white, // Cor do container
+                            borderRadius: BorderRadius.circular(
+                                10.0), // Arredondar cantos
+                            border: Border.all(
+                              color: ConstColor.pinkVS, // Cor da borda
+                              width: 2.0, // Espessura da borda
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: InkWell(
+                              onTap: () =>
+                                  BlocProvider.of<ViagemPassageirosBloc>(
+                                          context)
+                                      .add(ViagemPassageirosUpadateStatus(
+                                passageirosStatus: pasStatus,
+                              )),
+                              child: Row(
+                                children: [
+                                  pasStatus.status == 1
+                                      ? const Icon(
+                                          Icons.check_circle,
+                                          color: Colors.green,
+                                          size: 32,
+                                        )
+                                      : const Icon(
+                                          Icons.cancel,
+                                          color: Colors.red,
+                                          size: 32,
+                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Text(
+                                      passageiro.nome ?? '',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
                                   ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Text(
-                                passageiro.nome ?? '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
+                      );
+                    },
+                  );
           }
           return const SizedBox();
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: const Text('Gerar rota'),
-        icon: const Icon(Icons.route),
+        onPressed: () {
+          BlocProvider.of<ViagemPassageirosBloc>(context)
+              .add(ViagemPassageirosGeraRotas());
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const RotasGeradas()),
+          );
+        },
+        backgroundColor: ConstColor.pinkDM,
+        label: const Text(
+          'Gerar rota',
+          style: TextStyle(color: ConstColor.pinkVS),
+        ),
+        icon: const Icon(
+          Icons.route,
+          color: ConstColor.pinkVS,
+        ),
       ),
     );
   }

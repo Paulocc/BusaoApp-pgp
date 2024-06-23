@@ -9,6 +9,7 @@ import 'screens/pages/cadastro_viagens.dart';
 import 'screens/pages/lista_passageiros_cadastrados.dart';
 import 'screens/pages/lista_passageiros_viagem.dart';
 import 'screens/pages/lista_viagens.dart';
+import 'screens/pages/rotas_geradas.dart';
 import 'utils/consts/consts_colors.dart';
 import 'utils/enums/routes.dart';
 
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
           Routes.listaPassageirosCadastrados.valor: (context) =>
               const ListaPassageirosCadastrados(),
           Routes.listaViagens.valor: (context) => const ListaViagens(),
+          Routes.rotasGeradas.valor: (context) => const RotasGeradas(),
         },
       ),
     );

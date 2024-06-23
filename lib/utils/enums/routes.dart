@@ -3,7 +3,8 @@ enum Routes {
   cadastroViagens('/cadastro_viagens'),
   listaViagens('/lista_viagens'),
   listaPassageirosViagem('/lista_passageiros_viagem'),
-  listaPassageirosCadastrados('/lista_passageiros_cadastrados');
+  listaPassageirosCadastrados('/lista_passageiros_cadastrados'),
+  rotasGeradas('/rotas_geradas');
 
   final String value;
 

@@ -25,6 +25,14 @@ class Endereco {
         ", $numero";
   }
 
+  String toStringByMapGoogle() {
+    return '${logradouro != null ? logradouro!.replaceAll(' ', '+').substring(1) : ''},'
+        '${numero != null && numero != '' ? '+${numero!.replaceAll(' ', '')}+-' : ''}'
+        '${logradouro != null ? logradouro!.replaceAll(' ', '+') : ''},'
+        '${localidade != null ? '${localidade!.replaceAll(' ', '+')}+-+$uf' : ''},'
+        '+$cep';
+  }
+
   factory Endereco.fromToStringByMap(String string) {
     List<String> splitted = string.split(',');
     List<String> cidade = splitted[3].split(' - ');

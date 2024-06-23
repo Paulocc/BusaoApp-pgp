@@ -133,8 +133,10 @@ class _CadastroViagensState extends State<CadastroViagens> {
   }
 
   _onChangedSaida(String cepSaida) async {
-    if (cepSaida.length == 8) {
-      _infoCepSaida = (await ViaCepSearchCep().searchInfoByCep(cep: cepSaida))
+    if (cepSaida.length == 10) {
+      _infoCepSaida = (await ViaCepSearchCep().searchInfoByCep(
+        cep: cepSaida.replaceAll('-', '').replaceAll('.', ''),
+      ))
           .fold((_) => ViaCepInfo(), (data) => data);
     }
     setState(() {
@@ -147,8 +149,10 @@ class _CadastroViagensState extends State<CadastroViagens> {
   }
 
   _onChangedRetorno(String cepSaida) async {
-    if (cepSaida.length == 8) {
-      _infoCepRetorno = (await ViaCepSearchCep().searchInfoByCep(cep: cepSaida))
+    if (cepSaida.length == 10) {
+      _infoCepRetorno = (await ViaCepSearchCep().searchInfoByCep(
+        cep: cepSaida.replaceAll('-', '').replaceAll('.', ''),
+      ))
           .fold((_) => ViaCepInfo(), (data) => data);
     }
     setState(() {
