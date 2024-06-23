@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:giuse_app/database/sql_helper.dart';
+import 'package:search_cep/search_cep.dart';
 
+import '../../models/endereco_model.dart';
 import '../../models/viagem_model.dart';
 import '../../utils/consts/consts_colors.dart';
 import '../bloc/viagem/viagem_bloc.dart';
+import '../components/container_endereco.dart';
 import '../components/text_form_field_padrao.dart';
 
 class CadastroViagens extends StatefulWidget {
@@ -15,14 +17,18 @@ class CadastroViagens extends StatefulWidget {
 }
 
 class _CadastroViagensState extends State<CadastroViagens> {
-  TextEditingController tituloController = TextEditingController();
-  TextEditingController saidaController = TextEditingController();
-  TextEditingController retornoController = TextEditingController();
+  ViaCepInfo _infoCepSaida = ViaCepInfo();
+  ViaCepInfo _infoCepRetorno = ViaCepInfo();
 
-  Future<void> addViagem() async {
-    await SQLHelper.createViagem(
-        tituloController.text, saidaController.text, retornoController.text);
-  }
+  TextEditingController tituloController = TextEditingController();
+  TextEditingController numeroSaidaController = TextEditingController();
+  TextEditingController numeroRetornoController = TextEditingController();
+  TextEditingController logradouroSaidaController = TextEditingController();
+  TextEditingController logradouroRetornoController = TextEditingController();
+  TextEditingController bairroSaidaController = TextEditingController();
+  TextEditingController bairroRetornoController = TextEditingController();
+  TextEditingController cidadeSaidaController = TextEditingController();
+  TextEditingController cidadeRetornoController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,47 +59,32 @@ class _CadastroViagensState extends State<CadastroViagens> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       children: [
                         TextFormFieldPadrao(
-                          titulo: 'Titulo',
+                          titulo: 'Titulo da viagem',
                           subTitulo: 'Digite o Titulo da viagem...',
                           controller: tituloController,
                         ),
                         const SizedBox(height: 16),
-                        TextFormFieldPadrao(
-                          titulo: 'Local Saida',
-                          subTitulo: 'Digite o local da saida..',
-                          controller: saidaController,
+                        ContainerEndereco(
+                          titulo: 'Endereço do ponto de saida',
+                          numeroController: numeroSaidaController,
+                          logradouroController: logradouroSaidaController,
+                          bairroController: bairroSaidaController,
+                          cidadeController: cidadeSaidaController,
+                          onChanged: _onChangedSaida,
                         ),
-                        // SizedBox(height: 16),
-                        // TextFormFieldPadrao(
-                        //   titulo: 'Horario de saida',
-                        //   subTitulo: 'Digite o horario da saida...',
-                        // ),
                         const SizedBox(height: 16),
-                        TextFormFieldPadrao(
-                          titulo: 'Local Retorno',
-                          subTitulo: 'Digite o local do retorno...',
-                          controller: retornoController,
+                        ContainerEndereco(
+                          titulo: 'Endereço do ponto de retorno',
+                          numeroController: numeroRetornoController,
+                          logradouroController: logradouroRetornoController,
+                          bairroController: bairroRetornoController,
+                          cidadeController: cidadeRetornoController,
+                          onChanged: _onChangedRetorno,
                         ),
-                        // SizedBox(height: 16),
-                        // TextFormFieldPadrao(
-                        //   titulo: 'Horario de retorno',
-                        //   subTitulo: 'Digite o horario da retorno...',
-                        // ),
-                        // SizedBox(height: 16),
-                        // TextFormFieldPadrao(
-                        //   titulo: 'Dias de viagem',
-                        //   subTitulo: 'Digite os dias que acontecerar a viagem...',
-                        // ),
-                        // SizedBox(height: 16),
-                        // TextFormFieldPadrao(
-                        //   titulo: 'Horiaro disparo',
-                        //   subTitulo:
-                        //       'Digite o horario de diparo dos lembretes...',
-                        // ),
                       ],
                     ),
                   ),
@@ -104,17 +95,22 @@ class _CadastroViagensState extends State<CadastroViagens> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xFFE8A2C0)),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         BlocProvider.of<ViagemBloc>(context).add(
                           ViagemSalvar(
                             viagem: Viagem(
                               titulo: tituloController.text,
-                              saida: saidaController.text,
-                              retorno: retornoController.text,
+                              enderecoSaida: Endereco.fromToViaCepInfo(
+                                _infoCepSaida,
+                                numeroSaidaController.text,
+                              ),
+                              enderecoRetorno: Endereco.fromToViaCepInfo(
+                                _infoCepRetorno,
+                                numeroRetornoController.text,
+                              ),
                             ),
                           ),
                         );
-                        addViagem();
                       },
                       child: const Padding(
                         padding:
@@ -134,5 +130,33 @@ class _CadastroViagensState extends State<CadastroViagens> {
         ),
       ),
     );
+  }
+
+  _onChangedSaida(String cepSaida) async {
+    if (cepSaida.length == 8) {
+      _infoCepSaida = (await ViaCepSearchCep().searchInfoByCep(cep: cepSaida))
+          .fold((_) => ViaCepInfo(), (data) => data);
+    }
+    setState(() {
+      logradouroSaidaController.text = _infoCepSaida.logradouro ?? '';
+      bairroSaidaController.text = _infoCepSaida.bairro ?? '';
+      cidadeSaidaController.text = _infoCepSaida.localidade != null
+          ? '${_infoCepSaida.localidade} - ${_infoCepSaida.uf}'
+          : '';
+    });
+  }
+
+  _onChangedRetorno(String cepSaida) async {
+    if (cepSaida.length == 8) {
+      _infoCepRetorno = (await ViaCepSearchCep().searchInfoByCep(cep: cepSaida))
+          .fold((_) => ViaCepInfo(), (data) => data);
+    }
+    setState(() {
+      logradouroRetornoController.text = _infoCepRetorno.logradouro ?? '';
+      bairroRetornoController.text = _infoCepRetorno.bairro ?? '';
+      cidadeRetornoController.text = _infoCepRetorno.localidade != null
+          ? '${_infoCepRetorno.localidade} - ${_infoCepRetorno.uf}'
+          : '';
+    });
   }
 }

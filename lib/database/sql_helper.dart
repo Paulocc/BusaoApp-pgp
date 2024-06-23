@@ -1,12 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
+import '../models/passageiro_model.dart';
+import '../models/passageiros_status.dart';
+import '../models/viagem_model.dart';
+
 class SQLHelper {
   static Future<void> createTables(sql.Database database) async {
     await database.execute('''
     CREATE TABLE viagens (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT,
+    titulo TEXT,
     endereco_inicio TEXT,
     endereco_fim TEXT)''');
 
@@ -14,15 +18,33 @@ class SQLHelper {
      CREATE TABLE passageiros (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT,
-    cpf TEXT,
-    telefone INTEGER,
-    email TEXT,
+    telefone TEXT,
     endereco_embarque TEXT,
-    endereco_desembarque TEXT,
+    endereco_desembarque TEXT
+)''');
+
+    await database.execute('''
+     CREATE TABLE passageiros_status (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    status INTEGER,
     viagem_id INTEGER,
-    FOREIGN KEY(viagem_id) REFERENCES rotasViagem(id)
+    passageiro_id INTEGER
 )''');
   }
+
+//     await database.execute('''
+//      CREATE TABLE passageiros (
+//     id INTEGER PRIMARY KEY AUTOINCREMENT,
+//     nome TEXT,
+//     cpf TEXT,
+//     telefone INTEGER,
+//     email TEXT,
+//     endereco_embarque TEXT,
+//     endereco_desembarque TEXT,
+//     viagem_id INTEGER,
+//     FOREIGN KEY(viagem_id) REFERENCES rotasViagem(id)
+// )''');
+//   }
 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
@@ -34,66 +56,48 @@ class SQLHelper {
     );
   }
 
-  static Future<int> createPassageiro(
-      String nome,
-      String cpf,
-      int telefone,
-      String email,
-      String endEmbarque,
-      String endDesembarque,
-      int idViagem) async {
+  // Passageiros ---------------------------------------------------------------
+
+  static Future<int> insertPassageiro(Passageiro passageiro) async {
     final db = await SQLHelper.db();
 
-    final data = {
-      'nome': nome,
-      'cpf': cpf,
-      'telefone': telefone,
-      'email': email,
-      'endereco_embarque': endEmbarque,
-      'endereco_desembarque': endDesembarque,
-      'viagem_id': idViagem,
-    };
-
-    final id = await db.insert('passageiros', data,
+    return await db.insert('passageiros', passageiro.toMapBD(),
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
-    return id;
   }
 
-  static Future<List<Map<String, dynamic>>> getPassageiros(idViagem) async {
+  static Future<List<Passageiro>> getAllPassageiros() async {
     final db = await SQLHelper.db();
-    return db.query('passageiros',
-        where: 'viagem_id = ?', whereArgs: [idViagem], orderBy: 'id');
+    return Passageiro.fromMapList(await db.query('passageiros', orderBy: 'id'));
   }
 
-  static Future<List<Map<String, dynamic>>> getPassageiro(id) async {
+  static Future<List<Passageiro>> getPassageirosListByIds(List<int?> ids) async {
     final db = await SQLHelper.db();
-    return db.query('passageiros', where: 'id = ?', whereArgs: [id], limit: 1);
+    return Passageiro.fromMapList(await db.rawQuery(''
+        'SELECT *'
+        '  FROM passageiros'
+        ' WHERE id IN (${ids.join(',')})'));
   }
 
-  static Future<int> updatePassageiro(
-      int id,
-      String nome,
-      String cpf,
-      int telefone,
-      String email,
-      String endEmbarque,
-      String endDesembarque,
-      int idViagem) async {
+
+  static Future<Passageiro> getPassageiroById(id) async {
     final db = await SQLHelper.db();
+    return Passageiro.fromMap((await db.query(
+      'passageiros',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    ))
+        .first);
+  }
 
-    final data = {
-      'nome': nome,
-      'cpf': cpf,
-      'telefone': telefone,
-      'email': email,
-      'endereco_embarque': endEmbarque,
-      'endereco_desembarque': endDesembarque,
-      'viagem_id': idViagem,
-    };
-
-    final result =
-        await db.update('passageiros', data, where: 'id = ?', whereArgs: [id]);
-    return result;
+  static Future<int> updatePassageiro(Passageiro passageiro) async {
+    final db = await SQLHelper.db();
+    return await db.update(
+      'passageiros',
+      passageiro.toMapBD(),
+      where: 'id = ?',
+      whereArgs: [passageiro.id],
+    );
   }
 
   static Future<void> deletePassageiro(id) async {
@@ -105,52 +109,103 @@ class SQLHelper {
     }
   }
 
-  //apartir daqui viagens
+  // Viagens -------------------------------------------------------------------
 
-  static Future<int> createViagem(
-      String nome, String endInicio, String endFinal) async {
+  static Future<int> insertViagem(Viagem viagem) async {
     final db = await SQLHelper.db();
 
-    final data = {
-      'nome': nome,
-      'endereco_inicio': endInicio,
-      'endereco_fim': endFinal,
-    };
-
-    final id = await db.insert('viagens', data,
-        conflictAlgorithm: sql.ConflictAlgorithm.replace);
-    return id;
+    return await db.insert(
+      'viagens',
+      viagem.toMapBD(),
+      conflictAlgorithm: sql.ConflictAlgorithm.replace,
+    );
   }
 
-  static Future<List<Map<String, dynamic>>> getViagens() async {
+  static Future<List<Viagem>> getAllViagens() async {
     final db = await SQLHelper.db();
-    return db.query('viagens', orderBy: 'id');
+    return Viagem.fromMapList(await db.query('viagens', orderBy: 'id'));
   }
 
-  static Future<List<Map<String, dynamic>>> getViagem(id) async {
+  static Future<Viagem> getViagemById(id) async {
     final db = await SQLHelper.db();
-    return db.query('viagens', where: 'id = ?', whereArgs: [id], limit: 1);
+    return Viagem.fromMap((await db.query(
+      'viagens',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    ))
+        .first);
   }
 
-  static Future<int> updateViagem(
-      String nome, String endInicio, String endFinal, int id) async {
+  static Future<int> updateViagem(Viagem viagem) async {
     final db = await SQLHelper.db();
 
-    final data = {
-      'nome': nome,
-      'endereco_inicio': endInicio,
-      'endereco_fim': endFinal,
-    };
-
-    final result =
-        await db.update('viagens', data, where: 'id = ?', whereArgs: [id]);
-    return result;
+    return await db.update(
+      'viagens',
+      viagem.toMapBD(),
+      where: 'id = ?',
+      whereArgs: [viagem.id],
+    );
   }
 
-  static Future<void> deleteViagem(id) async {
+  static Future<void> deleteViagem(int id) async {
     final db = await SQLHelper.db();
     try {
       await db.delete('viagens', where: 'id = ?', whereArgs: [id]);
+    } catch (err) {
+      debugPrint("Algo deu errado ao deletar a viagem: $err");
+    }
+  }
+
+  // Passageiros Status --------------------------------------------------------
+
+  static Future<int> insertPassageirosStatus(
+      PassageirosStatus passageiro) async {
+    final db = await SQLHelper.db();
+
+    return await db.insert(
+      'passageiros_status',
+      passageiro.toMapBD(),
+      conflictAlgorithm: sql.ConflictAlgorithm.replace,
+    );
+  }
+
+  static Future<List<PassageirosStatus>> getAllPassageirosStatus() async {
+    final db = await SQLHelper.db();
+    return PassageirosStatus.fromMapList(await db.query(
+      'passageiros_status',
+      orderBy: 'id',
+    ));
+  }
+
+  static Future<List<PassageirosStatus>> getPassageirosStatusByViagemId(
+    int viagemId,
+  ) async {
+    final db = await SQLHelper.db();
+    return PassageirosStatus.fromMapList(await db.query(
+      'passageiros_status',
+      where: 'viagem_id = ?',
+      whereArgs: [viagemId],
+    ));
+  }
+
+  static Future<int> updatePassageirosStatus(
+    PassageirosStatus passageiro,
+  ) async {
+    final db = await SQLHelper.db();
+
+    return await db.update(
+      'passageiros_status',
+      passageiro.toMapBD(),
+      where: 'id = ?',
+      whereArgs: [passageiro.id],
+    );
+  }
+
+  static Future<void> deletePassageirosStatus(int id) async {
+    final db = await SQLHelper.db();
+    try {
+      await db.delete('passageiros_status', where: 'id = ?', whereArgs: [id]);
     } catch (err) {
       debugPrint("Algo deu errado ao deletar a viagem: $err");
     }

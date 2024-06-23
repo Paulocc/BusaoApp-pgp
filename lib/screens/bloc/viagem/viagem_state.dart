@@ -22,3 +22,7 @@ final class ViagemLoaded extends ViagemState {
 final class ViagemSave extends ViagemState {
   const ViagemSave({super.listaViagens});
 }
+
+final class ViagemDelete extends ViagemState {
+  const ViagemDelete({super.listaViagens});
+}

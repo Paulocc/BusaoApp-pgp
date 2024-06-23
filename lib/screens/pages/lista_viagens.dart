@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:giuse_app/database/sql_helper.dart';
 
 import '../../utils/consts/consts_colors.dart';
 import '../bloc/viagem/viagem_bloc.dart';
 import 'cadastro_viagens.dart';
-import 'lista_passageiros.dart';
+import 'lista_passageiros_viagem.dart';
 
 class ListaViagens extends StatefulWidget {
   const ListaViagens({super.key});
@@ -15,19 +14,6 @@ class ListaViagens extends StatefulWidget {
 }
 
 class _ListaViagensState extends State<ListaViagens> {
-  List<Map<String, dynamic>> listaViagens = [];
-  int cont = 0;
-
-  bool isLoading = true;
-
-  void refreshViagens() async {
-    final data = await SQLHelper.getViagens();
-    setState(() {
-      listaViagens = data;
-      isLoading = false;
-    });
-  }
-
   @override
   void initState() {
     BlocProvider.of<ViagemBloc>(context).add(ViagemCarregar());
@@ -48,74 +34,79 @@ class _ListaViagensState extends State<ListaViagens> {
       ),
       body: BlocBuilder<ViagemBloc, ViagemState>(
         builder: (context, state) {
-          return ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: state.listaViagens != null
-                ? state.listaViagens?.length
-                : 0, //aqui vai o número de viagens
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ListaPassageiros()),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4.0,
-                    horizontal: 8.0,
+          if (state is ViagemLoading) {
+            const CircularProgressIndicator();
+          } else {
+            return ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount:
+                  state.listaViagens != null ? state.listaViagens?.length : 0,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ListaPassageirosViagem(
+                              vistoriaId: state.listaViagens?[index].id ?? 0,
+                            )),
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Cor do containLer
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Arredondar cantos
-                      border: Border.all(
-                        color: ConstColor.pinkVS, // Cor da borda
-                        width: 2.0, // Espessura da borda
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4.0,
+                      horizontal: 8.0,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 10,
-                                decoration: BoxDecoration(
-                                  color: Colors.green, // Cor do container
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // Arredondar cantos
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white, // Cor do containLer
+                        borderRadius:
+                            BorderRadius.circular(10.0), // Arredondar cantos
+                        border: Border.all(
+                          color: ConstColor.pinkVS, // Cor da borda
+                          width: 2.0, // Espessura da borda
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 50,
+                                  width: 10,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green, // Cor do container
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8),
-                                child: Text(
-                                    state.listaViagens?[index].titulo ?? ''),
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                            onPressed: () =>
-                                BlocProvider.of<ViagemBloc>(context).add(
-                                    ViagemDeletar(
-                                        viagem: state.listaViagens![index])),
-                            icon: const Icon(
-                              Icons.delete,
-                              color: Colors.red,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: Text(
+                                      state.listaViagens?[index].titulo ?? ''),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                            IconButton(
+                              onPressed: () =>
+                                  BlocProvider.of<ViagemBloc>(context).add(
+                                      ViagemDeletar(
+                                          viagem: state.listaViagens![index])),
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
-          );
+                );
+              },
+            );
+          }
+          return const SizedBox();
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
