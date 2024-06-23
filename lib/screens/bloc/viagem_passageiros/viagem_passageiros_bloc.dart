@@ -64,7 +64,6 @@ class ViagemPassageirosBloc
       emit(ViagemPassageirosLoading(
         viagemPassageiros: state.viagemPassageiros,
       ));
-      print('ViagemPassageirosGeraRotas');
 
       String url = 'https://www.google.com/maps/dir';
 
@@ -96,12 +95,12 @@ class ViagemPassageirosBloc
 
       String urlIda = '$url/'
           '${state.viagemPassageiros!.viagem!.enderecoSaida!.toStringByMapGoogle()}/'
-          '${enderecosPassageirosIda != '' ? '$enderecosPassageirosIda' : ''}'
+          '${enderecosPassageirosIda != '' ? enderecosPassageirosIda : ''}'
           '${state.viagemPassageiros!.viagem!.enderecoRetorno!.toStringByMapGoogle()}/';
 
       String urlVolta = '$url/'
           '${state.viagemPassageiros!.viagem!.enderecoRetorno!.toStringByMapGoogle()}/'
-          '${enderecosPassageirosVolta != '' ? '$enderecosPassageirosVolta' : ''}'
+          '${enderecosPassageirosVolta != '' ? enderecosPassageirosVolta : ''}'
           '${state.viagemPassageiros!.viagem!.enderecoSaida!.toStringByMapGoogle()}/';
 
       emit(ViagemPassageirosRotaGerada(
