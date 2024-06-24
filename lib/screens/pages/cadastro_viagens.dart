@@ -43,7 +43,7 @@ class _CadastroViagensState extends State<CadastroViagens> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            'Cadastra de Viagem',
+            'Cadastro de Viagem',
             style: TextStyle(
               color: ConstColor.pinkVS,
             ),

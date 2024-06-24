@@ -68,7 +68,7 @@ class _ListaPassageirosCadastradosState
               return listaVazia
                   ? const Center(
                       child: Text(
-                      'Nenhuma passageiro\ncadastrado',
+                      'Nenhum passageiro\ncadastrado',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
