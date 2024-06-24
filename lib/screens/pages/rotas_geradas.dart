@@ -66,7 +66,7 @@ class _RotasGeradasState extends State<RotasGeradas> {
                               );
                             },
                             child: const Text(
-                              'Rote de ida',
+                              'Rota de ida',
                               style: TextStyle(
                                 fontSize: 28,
                                 color: Colors.blue,
@@ -85,7 +85,7 @@ class _RotasGeradasState extends State<RotasGeradas> {
                               );
                             },
                             child: const Text(
-                              'Rote de volta',
+                              'Rota de volta',
                               style: TextStyle(
                                 fontSize: 28,
                                 color: Colors.blue,

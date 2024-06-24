@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:search_cep/search_cep.dart';
 
 import '../../models/endereco_model.dart';
 import '../../models/viagem_model.dart';
+import '../../utils/busca_endereco_cep.dart';
 import '../../utils/consts/consts_colors.dart';
 import '../bloc/viagem/viagem_bloc.dart';
 import '../components/container_endereco.dart';
@@ -17,8 +17,8 @@ class CadastroViagens extends StatefulWidget {
 }
 
 class _CadastroViagensState extends State<CadastroViagens> {
-  ViaCepInfo _infoCepSaida = ViaCepInfo();
-  ViaCepInfo _infoCepRetorno = ViaCepInfo();
+  Endereco _enderecoSaida = Endereco();
+  Endereco _enderecoRetorno = Endereco();
 
   TextEditingController tituloController = TextEditingController();
   TextEditingController numeroSaidaController = TextEditingController();
@@ -96,18 +96,14 @@ class _CadastroViagensState extends State<CadastroViagens> {
                             MaterialStateProperty.all(const Color(0xFFE8A2C0)),
                       ),
                       onPressed: () async {
+                        _enderecoSaida.numero = numeroSaidaController.text;
+                        _enderecoRetorno.numero = numeroRetornoController.text;
                         BlocProvider.of<ViagemBloc>(context).add(
                           ViagemSalvar(
                             viagem: Viagem(
                               titulo: tituloController.text,
-                              enderecoSaida: Endereco.fromToViaCepInfo(
-                                _infoCepSaida,
-                                numeroSaidaController.text,
-                              ),
-                              enderecoRetorno: Endereco.fromToViaCepInfo(
-                                _infoCepRetorno,
-                                numeroRetornoController.text,
-                              ),
+                              enderecoSaida: _enderecoSaida,
+                              enderecoRetorno: _enderecoRetorno,
                             ),
                           ),
                         );
@@ -134,32 +130,32 @@ class _CadastroViagensState extends State<CadastroViagens> {
 
   _onChangedSaida(String cepSaida) async {
     if (cepSaida.length == 10) {
-      _infoCepSaida = (await ViaCepSearchCep().searchInfoByCep(
-        cep: cepSaida.replaceAll('-', '').replaceAll('.', ''),
-      ))
-          .fold((_) => ViaCepInfo(), (data) => data);
+      _enderecoSaida = await buscaEnderecoCep(
+        cepSaida,
+        numeroSaidaController.text,
+      );
     }
     setState(() {
-      logradouroSaidaController.text = _infoCepSaida.logradouro ?? '';
-      bairroSaidaController.text = _infoCepSaida.bairro ?? '';
-      cidadeSaidaController.text = _infoCepSaida.localidade != null
-          ? '${_infoCepSaida.localidade} - ${_infoCepSaida.uf}'
+      logradouroSaidaController.text = _enderecoSaida.logradouro ?? '';
+      bairroSaidaController.text = _enderecoSaida.bairro ?? '';
+      cidadeSaidaController.text = _enderecoSaida.localidade != null
+          ? '${_enderecoSaida.localidade} - ${_enderecoSaida.uf}'
           : '';
     });
   }
 
-  _onChangedRetorno(String cepSaida) async {
-    if (cepSaida.length == 10) {
-      _infoCepRetorno = (await ViaCepSearchCep().searchInfoByCep(
-        cep: cepSaida.replaceAll('-', '').replaceAll('.', ''),
-      ))
-          .fold((_) => ViaCepInfo(), (data) => data);
+  _onChangedRetorno(String cepRetorno) async {
+    if (cepRetorno.length == 10) {
+      _enderecoRetorno = await buscaEnderecoCep(
+        cepRetorno,
+        numeroRetornoController.text,
+      );
     }
     setState(() {
-      logradouroRetornoController.text = _infoCepRetorno.logradouro ?? '';
-      bairroRetornoController.text = _infoCepRetorno.bairro ?? '';
-      cidadeRetornoController.text = _infoCepRetorno.localidade != null
-          ? '${_infoCepRetorno.localidade} - ${_infoCepRetorno.uf}'
+      logradouroRetornoController.text = _enderecoRetorno.logradouro ?? '';
+      bairroRetornoController.text = _enderecoRetorno.bairro ?? '';
+      cidadeRetornoController.text = _enderecoRetorno.localidade != null
+          ? '${_enderecoRetorno.localidade} - ${_enderecoRetorno.uf}'
           : '';
     });
   }

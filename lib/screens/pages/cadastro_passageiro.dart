@@ -2,10 +2,10 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:search_cep/search_cep.dart';
 
 import '../../models/endereco_model.dart';
 import '../../models/passageiro_model.dart';
+import '../../utils/busca_endereco_cep.dart';
 import '../../utils/consts/consts_colors.dart';
 import '../bloc/passageiros/passageiros_bloc.dart';
 import '../components/container_endereco.dart';
@@ -19,8 +19,8 @@ class CadastroPassageiro extends StatefulWidget {
 }
 
 class _CadastroPassageiroState extends State<CadastroPassageiro> {
-  ViaCepInfo _infoCepEmbarque = ViaCepInfo();
-  ViaCepInfo _infoCepDesembarque = ViaCepInfo();
+  Endereco _enderecoEmbarque = Endereco();
+  Endereco _enderecoDesembarque = Endereco();
 
   TextEditingController nomeController = TextEditingController();
   TextEditingController telefoneController = TextEditingController();
@@ -109,18 +109,17 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
                             MaterialStateProperty.all(const Color(0xFFE8A2C0)),
                       ),
                       onPressed: () {
+                        _enderecoEmbarque.numero =
+                            numeroEmbarqueController.text;
+                        _enderecoDesembarque.numero =
+                            numeroDesembarqueController.text;
                         BlocProvider.of<PassageirosBloc>(context).add(
                           PassageirosSalvar(
                             passageiro: Passageiro(
                               nome: nomeController.text,
                               telefone: telefoneController.text,
-                              enderecoEmbarque: Endereco.fromToViaCepInfo(
-                                  _infoCepEmbarque,
-                                  numeroEmbarqueController.text),
-                              enderecoDesembarque: Endereco.fromToViaCepInfo(
-                                _infoCepDesembarque,
-                                numeroDesembarqueController.text,
-                              ),
+                              enderecoEmbarque: _enderecoEmbarque,
+                              enderecoDesembarque: _enderecoDesembarque,
                             ),
                           ),
                         );
@@ -145,35 +144,35 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
     );
   }
 
-  _onChangedEmbarque(String cepSaida) async {
-    if (cepSaida.length == 10) {
-      _infoCepEmbarque = (await ViaCepSearchCep().searchInfoByCep(
-        cep: cepSaida.replaceAll('-', '').replaceAll('.', ''),
-      ))
-          .fold((_) => ViaCepInfo(), (data) => data);
+  _onChangedEmbarque(String cep) async {
+    if (cep.length == 10) {
+      _enderecoEmbarque = await buscaEnderecoCep(
+        cep,
+        numeroEmbarqueController.text,
+      );
     }
     setState(() {
-      logradouroEmbarqueController.text = _infoCepEmbarque.logradouro ?? '';
-      bairroEmbarqueController.text = _infoCepEmbarque.bairro ?? '';
-      cidadeEmbarqueController.text = _infoCepEmbarque.localidade != null
-          ? '${_infoCepEmbarque.localidade} - ${_infoCepEmbarque.uf}'
+      logradouroEmbarqueController.text = _enderecoEmbarque.logradouro ?? '';
+      bairroEmbarqueController.text = _enderecoEmbarque.bairro ?? '';
+      cidadeEmbarqueController.text = _enderecoEmbarque.localidade != null
+          ? '${_enderecoEmbarque.localidade} - ${_enderecoEmbarque.uf}'
           : '';
     });
   }
 
-  _onChangedDesembarque(String cepSaida) async {
-    if (cepSaida.length == 10) {
-      _infoCepDesembarque = (await ViaCepSearchCep().searchInfoByCep(
-        cep: cepSaida.replaceAll('-', '').replaceAll('.', ''),
-      ))
-          .fold((_) => ViaCepInfo(), (data) => data);
+  _onChangedDesembarque(String cep) async {
+    if (cep.length == 10) {
+      _enderecoDesembarque = await buscaEnderecoCep(
+        cep,
+        numeroDesembarqueController.text,
+      );
     }
     setState(() {
       logradouroDesembarqueController.text =
-          _infoCepDesembarque.logradouro ?? '';
-      bairroDesembarqueController.text = _infoCepDesembarque.bairro ?? '';
-      cidadeDesembarqueController.text = _infoCepDesembarque.localidade != null
-          ? '${_infoCepDesembarque.localidade} - ${_infoCepDesembarque.uf}'
+          _enderecoDesembarque.logradouro ?? '';
+      bairroDesembarqueController.text = _enderecoDesembarque.bairro ?? '';
+      cidadeDesembarqueController.text = _enderecoDesembarque.localidade != null
+          ? '${_enderecoDesembarque.localidade} - ${_enderecoDesembarque.uf}'
           : '';
     });
   }
