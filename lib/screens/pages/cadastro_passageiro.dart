@@ -111,8 +111,19 @@ class _CadastroPassageiroState extends State<CadastroPassageiro> {
                       onPressed: () {
                         _enderecoEmbarque.numero =
                             numeroEmbarqueController.text;
+                        _enderecoEmbarque.logradouro =
+                            logradouroEmbarqueController.text;
+                        _enderecoEmbarque.bairro =
+                            bairroEmbarqueController.text;
+
                         _enderecoDesembarque.numero =
                             numeroDesembarqueController.text;
+                        _enderecoEmbarque.logradouro =
+                            logradouroDesembarqueController.text;
+                        _enderecoEmbarque.bairro =
+                            bairroDesembarqueController.text;
+
+
                         BlocProvider.of<PassageirosBloc>(context).add(
                           PassageirosSalvar(
                             passageiro: Passageiro(

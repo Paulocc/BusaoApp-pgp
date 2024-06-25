@@ -54,7 +54,7 @@ class _ContainerEnderecoState extends State<ContainerEndereco> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 200,
+                  width: 130,
                   child: TextFormFieldPadrao(
                     titulo: 'CEP',
                     subTitulo: 'Digite o CEP..',
@@ -68,6 +68,34 @@ class _ContainerEnderecoState extends State<ContainerEndereco> {
                   ),
                 ),
                 SizedBox(
+                  width: 200,
+                  child: TextFormFieldPadrao(
+                    titulo: 'Cidade',
+                    enabled: false,
+                    controller: widget.cidadeController,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            TextFormFieldPadrao(
+              titulo: 'Logradouro',
+              //enabled: false,
+              controller: widget.logradouroController,
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 200,
+                  child: TextFormFieldPadrao(
+                    titulo: 'Bairro',
+                    //enabled: false,
+                    controller: widget.bairroController,
+                  ),
+                ),
+                SizedBox(
                   width: 130,
                   child: TextFormFieldPadrao(
                     titulo: 'Número',
@@ -78,38 +106,6 @@ class _ContainerEnderecoState extends State<ContainerEndereco> {
                   ),
                 ),
               ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: TextFormFieldPadrao(
-                titulo: 'Logradouro',
-                enabled: false,
-                controller: widget.logradouroController,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 160,
-                    child: TextFormFieldPadrao(
-                      titulo: 'Bairro',
-                      enabled: false,
-                      controller: widget.bairroController,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 160,
-                    child: TextFormFieldPadrao(
-                      titulo: 'Cidade',
-                      enabled: false,
-                      controller: widget.cidadeController,
-                    ),
-                  ),
-                ],
-              ),
             ),
             const SizedBox(height: 4),
           ],
